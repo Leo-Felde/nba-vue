@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import DataTable from '@/components/DataTable.vue'
+import DataTable from '../components/DataTable.vue'
 
 describe('DataTable.vue', () => {
   const headers = [
@@ -7,7 +7,7 @@ describe('DataTable.vue', () => {
     { key: 'age', label: 'Age' },
   ]
 
-  const items = [
+  const items: { [key: string]: string | number }[] = [
     { name: 'John Doe', age: 30 },
     { name: 'Jane Doe', age: 25 },
   ]

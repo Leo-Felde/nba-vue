@@ -34,7 +34,7 @@
         <button class="bg-blue-500">editar</button>
       </template>
       <template #tbody-before v-if="searchQuery && !players.length">
-        <tr class="font-semibold text-gray-500">
+        <tr class="font-semibold text-gray-500 filter-not-found">
           <td :colspan="headers.length">
             Nenhum jogador encontrado com base na pesquisa
           </td>

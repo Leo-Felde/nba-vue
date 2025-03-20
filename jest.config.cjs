@@ -2,18 +2,25 @@ module.exports = {
   testEnvironment: 'jsdom',
   transform: {
     '^.+\\.vue$': '@vue/vue3-jest',
-    '^.+\\js$': 'babel-jest',
+    '^.+\\.[tj]s$': 'ts-jest', // Ensure TypeScript is correctly transformed
   },
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$',
-  moduleFileExtensions: ['vue', 'js'],
+  moduleFileExtensions: ['vue', 'js', 'ts', 'json'],
+  moduleDirectories: ['node_modules', 'src'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  resolver: 'jest-ts-webcompat-resolver',
+  preset: 'ts-jest',
   coveragePathIgnorePatterns: ['/node_modules/', '/tests/'],
   coverageReporters: ['text', 'json-summary'],
-  // Fix in order for vue-test-utils to work with Jest 29
-  // https://test-utils.vuejs.org/migration/#test-runners-upgrade-notes
   testEnvironmentOptions: {
     customExportConditions: ['node', 'node-addons'],
+  },
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+      isolatedModules: true,
+    },
   },
 }
