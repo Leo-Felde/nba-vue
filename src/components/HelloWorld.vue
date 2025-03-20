@@ -1,38 +1,64 @@
-<script setup>
-import { ref } from "vue";
-
-defineProps({
-  msg: String,
-});
-
-const count = ref(0);
-</script>
-
 <template>
-  <h1>{{ msg }}</h1>
+  <div>
+    <!-- <PlayerTable /> -->
 
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
-  </div>
+    <DataTable :headers="headers" :items="items">
+      <template #header-status="{ header }">
+        <span class="flex items-center">
+          {{ header.label }}
+          <span class="ml-2 text-xs text-gray-400">(Custom)</span>
+        </span>
+      </template>
 
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-
-  <div class="bg-blue-500 text-white p-4">
-    <h1 class="text-2xl font-bold">Hello, Tailwind CSS with Vue.js!</h1>
+      <template #status="{ item }">
+        <span
+          :class="`px-2 py-1 text-sm font-semibold rounded-full ${item.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`"
+        >
+          {{ item.status }}
+        </span>
+      </template>
+    </DataTable>
   </div>
 </template>
 
-<style scoped>
-.read-the-docs {
-  color: #888;
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { fetchTeams } from '../api/teams.ts'
+import { fetchPlayers, getPlayer } from '../api/players.ts'
+
+import TeamIcon from './TeamIcon.vue'
+import DataTable from './DataTable.vue'
+import { Player } from '../types/player'
+import { Team } from '../types/team'
+import PlayerTable from './PlayerTable.vue'
+
+components: {
+  TeamIcon, DataTable, PlayerTable
 }
-</style>
+
+const headers = [
+  { key: 'name', label: 'Name' },
+  { key: 'age', label: 'Age' },
+  { key: 'status', label: 'Status' },
+]
+
+const items = [
+  { name: 'John Doe', age: 28, status: 'Active' },
+  { name: 'Jane Smith', age: 34, status: 'Inactive' },
+  { name: 'Sam Green', age: 45, status: 'Active' },
+]
+
+const teams = ref<Team[]>([])
+const players = ref<Player[]>([])
+const player = ref<Player | null>(null)
+
+onMounted(async () => {
+  // teams.value = await fetchTeams()
+  // players.value = await fetchPlayers({
+  //   per_page: 25,
+  //   cursor: 1,
+  //   search: 'james',
+  // })
+  // player.value = await getPlayer(237)
+})
+</script>
