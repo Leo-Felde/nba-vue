@@ -33,7 +33,6 @@
             </tr>
           </thead>
 
-          <!-- Table Body -->
           <tbody class="bg-white divide-y divide-gray-200">
             <slot name="tbody-before">
               <tr class="loading-row">

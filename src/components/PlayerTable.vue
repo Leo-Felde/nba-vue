@@ -30,7 +30,9 @@
         {{ item.team.full_name }}
       </template>
 
-      <template #action="{ item }"> ação :) </template>
+      <template #action="{ item }">
+        <button class="bg-blue-500">editar</button>
+      </template>
       <template #tbody-before v-if="searchQuery && !players.length">
         <tr class="font-semibold text-gray-500">
           <td :colspan="headers.length">
