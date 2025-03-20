@@ -18,7 +18,7 @@
       </div>
 
       <div class="overflow-auto data-table-content">
-        <table class="min-w-full divide-y divide-gray-200 hidden md:table">
+        <table class="min-w-full divide-y divide-gray-200 hidden sm:table">
           <thead class="data-table-header bg-gray-50 sticky top-0 z-10">
             <tr>
               <th
@@ -65,7 +65,7 @@
         </table>
 
         <!-- Tabela pro mobile -->
-        <div class="md:hidden">
+        <div class="sm:hidden">
           <div
             v-for="(item, index) in items"
             :key="index"

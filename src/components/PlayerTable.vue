@@ -31,7 +31,7 @@
       </template>
 
       <template #action="{ item }">
-        <button class="bg-blue-500">editar</button>
+        <button class="bg-sky-400 text-white">editar</button>
       </template>
       <template #tbody-before v-if="searchQuery && !players.length">
         <tr class="font-semibold text-gray-500 filter-not-found">
