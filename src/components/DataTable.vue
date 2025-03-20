@@ -36,7 +36,7 @@
           <!-- Table Body -->
           <tbody class="bg-white divide-y divide-gray-200">
             <slot name="tbody-before">
-              <tr>
+              <tr class="loading-row">
                 <td
                   :colspan="headers.length"
                   v-if="!items.length"
@@ -100,14 +100,14 @@
         <button
           :disabled="!hasPrev || disablePagination || loading"
           @click="handlePrev"
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="data-table-prev-btn px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Anterior
         </button>
         <button
           :disabled="!hasNext || disablePagination || loading"
           @click="handleNext"
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="data-table-next-btn px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Próximo
         </button>
