@@ -1,0 +1,9 @@
+@import "./tailwind.css";
+
+.max-h-inh {
+  max-height: inherit;
+}
+
+html, body {
+  overflow: hidden;
+}

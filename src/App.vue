@@ -1,22 +1,25 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <HelloWorld msg="Vite + Vue" />
+  <PlayerTable />
+  <!-- <HelloWorld /> -->
 </template>
 
+<script setup>
+import HelloWorld from './components/HelloWorld.vue'
+import PlayerTable from './components/PlayerTable.vue'
+</script>
+
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.player-table {
+  height: 70dvh;
+  width: 60dvw;
+  overflow: hidden;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+:deep(.data-table-footer) {
+  bottom: -22px;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+:deep(.data-table-content) {
+  height: calc(70dvh - 145px);
 }
 </style>
