@@ -1,12 +1,20 @@
 import apiClient from './index'
+import { Player } from '../types/player'
 
 export interface PlayersParams {
-  cursor?: number
+  cursor?: number | null
   per_page?: number
   search?: string
 }
 
-export const fetchPlayers = async (params?: PlayersParams) => {
+interface listResponse {
+  data: Player[]
+  meta: any
+}
+
+export const fetchPlayers = async (
+  params?: PlayersParams
+): Promise<listResponse> => {
   try {
     const response = await apiClient.get('/players', { params })
     return response.data
@@ -16,7 +24,7 @@ export const fetchPlayers = async (params?: PlayersParams) => {
   }
 }
 
-export const getPlayer = async (id: number) => {
+export const getPlayer = async (id: number): Promise<Player> => {
   try {
     const response = await apiClient.get(`/players/${id}`)
     return response.data

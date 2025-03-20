@@ -1,6 +1,12 @@
 import apiClient from './index'
+import { Team } from '../types/team'
 
-export const fetchTeams = async () => {
+interface listResponse {
+  data: Team[]
+  meta: any
+}
+
+export const fetchTeams = async (): Promise<listResponse> => {
   try {
     const response = await apiClient.get('/teams')
     return response.data
