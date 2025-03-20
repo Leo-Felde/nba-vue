@@ -1,10 +1,8 @@
 <template>
   <PlayerTable />
-  <!-- <HelloWorld /> -->
 </template>
 
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
 import PlayerTable from './components/PlayerTable.vue'
 </script>
 

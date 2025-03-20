@@ -47,9 +47,9 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { Player } from '../types/player'
-import { useSnackbar } from '../plugins/SnackbarPlugin.ts'
+import { useSnackbar } from '../plugins/SnackbarPlugin'
 
-import { fetchPlayers } from '../api/players.ts'
+import { fetchPlayers } from '../api/players'
 
 import DataTable from './DataTable.vue'
 
