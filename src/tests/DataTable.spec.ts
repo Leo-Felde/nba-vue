@@ -45,7 +45,7 @@ describe('DataTable.vue', () => {
     })
 
     const loadingBar = wrapper.find('.animate-pulse')
-    expect(loadingBar.exists()).toBe(true)
+    expect(loadingBar.exists()).toBeTruthy()
   })
 
   it('Exibe mensagem se não tiver nenhum item', () => {

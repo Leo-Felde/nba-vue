@@ -49,8 +49,8 @@ describe('PlayerTable.vue', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.exists()).toBe(true)
-    expect(wrapper.findComponent(DataTable).exists()).toBe(true)
+    expect(wrapper.exists()).toBeTruthy()
+    expect(wrapper.findComponent(DataTable).exists()).toBeTruthy()
     expect(wrapper.find('h2').text()).toBe('Jogadores da NBA')
   })
 
