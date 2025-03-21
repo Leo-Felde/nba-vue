@@ -7,15 +7,18 @@
       {{ label }}
     </label>
     <input
+      class="mt-1 block w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
       :id="forId"
       :type="type"
       :value="modelValue"
-      @input="
-        $emit('update:modelValue', ($event.target as HTMLInputElement)?.value)
-      "
-      class="mt-1 block w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
       :class="{ 'border-red-500': errors.length }"
       :placeholder="placeholder"
+      @focus="$emit('focus', $event)"
+      @blur="$emit('blur', $event)"
+      @input="
+        ($emit('update:modelValue', ($event.target as HTMLInputElement)?.value),
+        $emit('input', $event))
+      "
     />
 
     <p v-if="errors.length" class="mt-1 text-sm text-red-500 text-left">
@@ -39,7 +42,7 @@ const props = defineProps({
     default: 'text',
   },
   modelValue: {
-    type: [String, Number],
+    type: [String, Number, null],
     required: true,
   },
   placeholder: {
@@ -52,7 +55,7 @@ const props = defineProps({
   },
 })
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue', 'focus', 'blur', 'input'])
 
 // talvez remover letra com acento?
 const forId = computed(() => {
