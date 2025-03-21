@@ -92,10 +92,15 @@ export default defineComponent({
     const searchQuery = ref('')
 
     const headers = [
-      { key: 'first_name', label: 'Nome' },
-      { key: 'last_name', label: 'Sobrenome' },
+      { key: 'first_name', label: 'Nome', sortable: true },
+      { key: 'last_name', label: 'Sobrenome', sortable: true },
       { key: 'position', label: 'Posição' },
-      { key: 'team', label: 'Time' },
+      {
+        key: 'team',
+        label: 'Time',
+        sortable: true,
+        sortFn: (item: { team: { full_name: any } }) => item.team.full_name,
+      },
       { key: 'action', label: 'Ações' },
     ]
 

@@ -61,17 +61,17 @@ describe('PlayerTable.vue', () => {
 
   it('deve passar os headers corretamente para o DataTable', async () => {
     const wrapper = mount(PlayerTable)
-
+    const headers = ['Nome', 'Sobrenome', 'Posição', 'Time', 'Ações']
     await wrapper.vm.$nextTick()
 
     const dataTable = wrapper.findComponent(DataTable)
-    expect(dataTable.props('headers')).toEqual([
-      { key: 'first_name', label: 'Nome' },
-      { key: 'last_name', label: 'Sobrenome' },
-      { key: 'position', label: 'Posição' },
-      { key: 'team', label: 'Time' },
-      { key: 'action', label: 'Ações' },
-    ])
+    expect(dataTable.exists()).toBeTruthy()
+
+    const tableHeaders = wrapper.findAll('th')
+    expect(tableHeaders.length).toBe(headers.length)
+    for (let i = 0; i < headers.length; i++) {
+      expect(tableHeaders[i].text()).toBe(headers[i])
+    }
   })
 
   it('deve exibir os jogadores retornados pela API', async () => {
