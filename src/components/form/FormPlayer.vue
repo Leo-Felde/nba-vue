@@ -61,6 +61,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, onMounted } from 'vue'
+import { useSnackbar } from '../../plugins/SnackbarPlugin'
 
 import { fetchTeams } from '../../api/teams'
 
@@ -88,6 +89,8 @@ export default defineComponent({
 
   emits: ['submit', 'update:modelValue'],
   setup(props, { emit }) {
+    const snackbar = useSnackbar()
+
     const form = ref({ ...props.modelValue })
 
     const errors = ref({
@@ -159,6 +162,11 @@ export default defineComponent({
     const onSubmit = () => {
       if (validateForm()) {
         emit('submit', form.value)
+      } else {
+        snackbar({
+          message: 'Preencha os campos obrigatórios e tente novamente.',
+          type: 'alert',
+        })
       }
     }
 
