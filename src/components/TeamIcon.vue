@@ -1,5 +1,5 @@
 <template>
-  <img :src="teamImageUrl" :alt="`Logo of ${icon}`" />
+  <img :src="teamImageUrl" :alt="`Logo ${icon}`" />
 </template>
 
 <script setup lang="ts">

@@ -2,6 +2,7 @@ import { ErrorMessages } from '../types/error'
 
 export const errorMessages: ErrorMessages = {
   obrigatorio: 'Campo obrigatório',
+  naoZero: 'Deve ser maior que 0',
   invalido: 'Valor inválido',
 }
 
