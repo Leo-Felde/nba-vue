@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils'
-import GenericModal from '@/components/Modal.vue'
+import Modal from '@/components/Modal.vue'
 
-describe('GenericModal.vue', () => {
+describe('Modal.vue', () => {
   it('Renderiza o modal quando "isOpen" for true', () => {
-    const wrapper = mount(GenericModal, {
+    const wrapper = mount(Modal, {
       props: {
         isOpen: true,
         title: 'Titulo',
@@ -15,7 +15,7 @@ describe('GenericModal.vue', () => {
   })
 
   it('Não renderiza quando "isOpen" for false', () => {
-    const wrapper = mount(GenericModal, {
+    const wrapper = mount(Modal, {
       props: {
         isOpen: false,
         title: 'Titulo',
@@ -26,7 +26,7 @@ describe('GenericModal.vue', () => {
   })
 
   it('Emite o evento "update:isOpen" com false quando o botão de fechar for clicado', async () => {
-    const wrapper = mount(GenericModal, {
+    const wrapper = mount(Modal, {
       props: {
         isOpen: true,
         title: 'Titulo',
@@ -39,8 +39,8 @@ describe('GenericModal.vue', () => {
     expect(wrapper.emitted('update:isOpen')?.[0]).toEqual([false])
   })
 
-  it('deve renderizar o slot de título corretamente', () => {
-    const wrapper = mount(GenericModal, {
+  it('Renderiza o slot de título', () => {
+    const wrapper = mount(Modal, {
       props: {
         isOpen: true,
         title: 'Titulo',
@@ -53,8 +53,8 @@ describe('GenericModal.vue', () => {
     expect(wrapper.find('h2').text()).toBe('Titulo personalizado')
   })
 
-  it('deve renderizar o slot de conteúdo corretamente', () => {
-    const wrapper = mount(GenericModal, {
+  it('Renderiza o slot de conteúdo', () => {
+    const wrapper = mount(Modal, {
       props: {
         isOpen: true,
         title: 'Titulo',
@@ -67,8 +67,8 @@ describe('GenericModal.vue', () => {
     expect(wrapper.find('p').text()).toBe('Conteúdo personalizado')
   })
 
-  it('Renderizar o slot de ações', () => {
-    const wrapper = mount(GenericModal, {
+  it('Renderiza o slot de ações', () => {
+    const wrapper = mount(Modal, {
       props: {
         isOpen: true,
         title: 'Titulo',
