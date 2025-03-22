@@ -43,14 +43,15 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue'
-import { useSnackbar } from '../../plugins/SnackbarPlugin'
-import { useConfirm } from '../../plugins/ConfirmationDialogPlugin'
+import { useSnackbar } from '@/plugins/SnackbarPlugin'
+import { useConfirm } from '@/plugins/ConfirmationDialogPlugin'
 
-import { Player } from '../../types/player'
+import { createPlayer, deletePlayer, updatePlayer } from '@/api/players'
 
-import Modal from '../Modal.vue'
-import FormPlayer from './FormPlayer.vue'
-import { createPlayer, deletePlayer, updatePlayer } from '../../api/players'
+import { Player } from '@/types/player'
+
+import Modal from './Modal.vue'
+import FormPlayer from './form/FormPlayer.vue'
 
 export default defineComponent({
   name: 'ModalFormPlayer',

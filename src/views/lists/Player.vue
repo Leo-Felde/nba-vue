@@ -9,10 +9,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Player } from '../../types/player'
+import { Player } from '@/types/player'
 
-import PlayerTable from '../../components/PlayerTable.vue'
-import FormModalPlayer from '../../components/form/ModalPlayer.vue'
+import PlayerTable from '@/components/PlayerTable.vue'
+import FormModalPlayer from '@/components/ModalPlayer.vue'
 
 const isModalOpen = ref(false)
 const formPlayer = ref<Player | null>(null)
