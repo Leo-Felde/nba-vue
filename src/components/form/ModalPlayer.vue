@@ -1,9 +1,16 @@
 <template>
-  <Modal v-model:isOpen="isModalOpen" :title="title" persistent>
-    <FormPlayer ref="formulario" @submit="salvar" v-model="player" />
+  <Modal v-model:isOpen="isModalOpen" persistent>
+    <template #title>
+      <h3 class="text-lg font-semibold">
+        {{ playerCopy.id ? 'Editar' : 'Cadastrar' }} jogador
+      </h3>
+    </template>
+
+    <FormPlayer ref="formulario" @submit="salvar" v-model="playerCopy" />
 
     <template #actions>
       <button
+        v-if="!!player.id"
         @click="excluir"
         :disabled="loadingSave || loadingDelete"
         class="ml-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 mr-auto flex items-center justify-center"
@@ -28,7 +35,7 @@
         class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 flex items-center justify-center"
       >
         <span v-if="loadingSave" class="loader"></span>
-        <span v-else>Salvar</span>
+        <span v-else>{{ playerCopy.id ? 'Editar' : 'Cadastrar' }}</span>
       </button>
     </template>
   </Modal>
@@ -37,11 +44,13 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue'
 import { useSnackbar } from '../../plugins/SnackbarPlugin'
+import { useConfirm } from '../../plugins/ConfirmationDialogPlugin'
 
 import { Player } from '../../types/player'
 
 import Modal from '../Modal.vue'
 import FormPlayer from './FormPlayer.vue'
+import { createPlayer, deletePlayer, updatePlayer } from '../../api/players'
 
 export default defineComponent({
   name: 'ModalFormPlayer',
@@ -58,7 +67,7 @@ export default defineComponent({
     },
     player: {
       type: Object as PropType<Player>,
-      default: {
+      default: () => ({
         id: null,
         first_name: null,
         last_name: null,
@@ -72,23 +81,22 @@ export default defineComponent({
         draft_round: null,
         draft_number: null,
         team: null,
-      },
-    },
-    title: {
-      type: String,
-      default: 'Jogador',
+      }),
     },
   },
 
   emits: ['update:isOpen', 'save', 'delete'],
   setup(props, { emit }) {
     const snackbar = useSnackbar()
+    const confirm = useConfirm()
 
     const isModalOpen = ref(props.isOpen)
     const formulario = ref<InstanceType<typeof FormPlayer> | null>(null)
 
     const loadingSave = ref(false)
     const loadingDelete = ref(false)
+
+    const playerCopy = ref({ ...props.player })
 
     watch(isModalOpen, (newValue) => {
       emit('update:isOpen', newValue)
@@ -105,10 +113,31 @@ export default defineComponent({
     }
 
     const excluir = async () => {
+      if (!props.player.id) return
+
+      const confirmDelete = await confirm({
+        title: 'Excluir jogador',
+        message:
+          'Tem certeza que deseja excluir o jogador? Essa ação não poderá ser desfeita',
+        actions: [
+          {
+            label: 'Excluir',
+            value: true,
+            classes: 'bg-red-500 hover:bg-red-600 text-white',
+          },
+          {
+            label: 'Cancelar',
+            value: false,
+            classes: 'bg-green-500 hover:bg-green-600 text-white',
+          },
+        ],
+      })
+      if (!confirmDelete) return
+
       loadingDelete.value = true
 
       try {
-        await new Promise((resolve) => setTimeout(resolve, 2500))
+        await deletePlayer(props.player.id)
 
         snackbar({
           message: 'Jogador excluído com sucesso',
@@ -116,9 +145,14 @@ export default defineComponent({
         })
         isModalOpen.value = false
       } catch (err) {
-        // o console.error ficaria no axios
+        let errMesage = 'Não foi possível excluir o jogador.'
+
+        if (err.data.status === 404) {
+          errMesage = 'O jogador não foi encontrado ou já foi excluído.'
+        }
+
         snackbar({
-          message: 'Não foi possível excluir o jogador.',
+          message: errMesage,
           type: 'error',
         })
       } finally {
@@ -126,19 +160,37 @@ export default defineComponent({
       }
     }
 
-    const salvar = async (formData: any) => {
+    const salvar = async () => {
       loadingSave.value = true
 
       try {
-        await new Promise((resolve) => setTimeout(resolve, 2500))
+        if (props.player.id) {
+          await updatePlayer(playerCopy.value)
 
-        snackbar({
-          message: 'Jogador editado com sucesso',
-          type: 'success',
-        })
-        isModalOpen.value = false
+          snackbar({
+            message: 'Jogador editado com sucesso',
+            type: 'success',
+          })
+
+          isModalOpen.value = false
+        } else {
+          const resp = await createPlayer(playerCopy.value)
+
+          if (resp.data.id) {
+            snackbar({
+              message: 'Jogador criado com sucesso',
+              type: 'success',
+            })
+
+            playerCopy.value = resp.data
+          } else {
+            snackbar({
+              message: 'Não foi possível criar o jogador.',
+              type: 'error',
+            })
+          }
+        }
       } catch (err) {
-        // o console.error ficaria no axios
         snackbar({
           message: 'Não foi possível salvar o jogador.',
           type: 'error',
@@ -155,6 +207,14 @@ export default defineComponent({
       }
     )
 
+    watch(
+      () => props.player,
+      (newValue) => {
+        playerCopy.value = { ...newValue }
+      },
+      { deep: true }
+    )
+
     return {
       isModalOpen,
       formulario,
@@ -164,6 +224,7 @@ export default defineComponent({
       onCancel,
       excluir,
       salvar,
+      playerCopy,
     }
   },
 })

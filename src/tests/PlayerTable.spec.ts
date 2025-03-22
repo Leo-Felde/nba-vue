@@ -4,12 +4,11 @@ import DataTable from '@/components/DataTable.vue'
 import { fetchPlayers } from '@/api/players'
 import { useSnackbar } from '@/plugins/SnackbarPlugin'
 
-// Mock do Snackbar Plugin, pq isso da problema JESUS CRISTO!?
+// Mock do Snackbar Plugin
 jest.mock('@/plugins/SnackbarPlugin', () => ({
   useSnackbar: jest.fn(),
 }))
 
-// setup da mock da api, negocio desgraçado
 jest.mock('@/api/players', () => ({
   fetchPlayers: jest.fn(),
 }))
