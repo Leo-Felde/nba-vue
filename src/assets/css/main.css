@@ -91,3 +91,7 @@ button:focus-visible {
     color: #747bff;
   }
 }
+
+.confirmDialog-container {
+  z-index: 999;
+}
