@@ -2,6 +2,10 @@
   animation: slideIn 0.3s ease-out;
 }
 
+.snackbar-container {
+  z-index: 999;
+}
+
 @keyframes slideIn {
   0% {
     transform: translateX(100%);

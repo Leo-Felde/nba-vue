@@ -8,5 +8,6 @@ module.exports = {
         },
       },
     ],
+    '@babel/preset-typescript', // Add this to ensure TypeScript is transformed
   ],
 }

@@ -15,7 +15,9 @@
     >
       <template #top>
         <div class="flex justify-between items-center">
-          <h2 class="text-lg font-semibold">Jogadores da NBA</h2>
+          <h2 class="text-lg font-semibold hidden md:block">
+            Jogadores da NBA
+          </h2>
           <input
             v-model="searchQuery"
             type="text"
@@ -31,10 +33,16 @@
       </template>
 
       <template #action="{ item }">
-        <button class="bg-blue-500">editar</button>
+        <button
+          class="bg-sky-400 text-white py-2 px-3 rounded-md"
+          :disabled="loading"
+          @click="$emit('editar', item)"
+        >
+          editar
+        </button>
       </template>
       <template #tbody-before v-if="searchQuery && !players.length">
-        <tr class="font-semibold text-gray-500">
+        <tr class="font-semibold text-gray-500 filter-not-found">
           <td :colspan="headers.length">
             Nenhum jogador encontrado com base na pesquisa
           </td>
@@ -47,9 +55,9 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { Player } from '../types/player'
-import { useSnackbar } from '../plugins/SnackbarPlugin.ts'
+import { useSnackbar } from '../plugins/SnackbarPlugin'
 
-import { fetchPlayers } from '../api/players.ts'
+import { fetchPlayers } from '../api/players'
 
 import DataTable from './DataTable.vue'
 
@@ -72,6 +80,7 @@ export default defineComponent({
     DataTable,
   },
 
+  emits: ['editar'],
   setup() {
     const snackbar = useSnackbar()
 
@@ -83,10 +92,15 @@ export default defineComponent({
     const searchQuery = ref('')
 
     const headers = [
-      { key: 'first_name', label: 'Nome' },
-      { key: 'last_name', label: 'Sobrenome' },
+      { key: 'first_name', label: 'Nome', sortable: true },
+      { key: 'last_name', label: 'Sobrenome', sortable: true },
       { key: 'position', label: 'Posição' },
-      { key: 'team', label: 'Time' },
+      {
+        key: 'team',
+        label: 'Time',
+        sortable: true,
+        sortFn: (item: { team: { full_name: any } }) => item.team.full_name,
+      },
       { key: 'action', label: 'Ações' },
     ]
 

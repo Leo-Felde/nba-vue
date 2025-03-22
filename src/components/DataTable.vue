@@ -18,17 +18,25 @@
       </div>
 
       <div class="overflow-auto data-table-content">
-        <table class="min-w-full divide-y divide-gray-200 hidden md:table">
+        <table class="min-w-full divide-y divide-gray-200 hidden sm:table">
           <thead class="data-table-header bg-gray-50 sticky top-0 z-10">
             <tr>
               <th
                 v-for="header in headers"
                 :key="header.key"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                @click="header.sortable ? sortBy(header.key) : null"
               >
-                <slot :name="`header-${header.key}`" :header="header">
-                  {{ header.label }}
-                </slot>
+                <div class="flex items-center">
+                  <slot :name="`header-${header.key}`" :header="header">
+                    {{ header.label }}
+                  </slot>
+                  <span v-if="header.sortable" class="ml-2">
+                    <span v-if="sortedColumn === header.key">
+                      {{ sortDirection === 'asc' ? '▲' : '▼' }}
+                    </span>
+                  </span>
+                </div>
               </th>
             </tr>
           </thead>
@@ -46,7 +54,7 @@
               </tr>
             </slot>
             <tr
-              v-for="(item, index) in items"
+              v-for="(item, index) in sortedItems"
               :key="index"
               :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
             >
@@ -65,9 +73,9 @@
         </table>
 
         <!-- Tabela pro mobile -->
-        <div class="md:hidden">
+        <div class="sm:hidden">
           <div
-            v-for="(item, index) in items"
+            v-for="(item, index) in sortedItems"
             :key="index"
             class="p-4 mb-4 rounded-lg shadow"
             :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
@@ -116,11 +124,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, useSlots } from 'vue'
+import { defineComponent, PropType, computed, useSlots, ref } from 'vue'
 
 interface Header {
   key: string
   label: string
+  sortable?: boolean
+  sortFn?: (item: any) => any // Função de ordenação personalizada
 }
 
 export default defineComponent({
@@ -161,6 +171,38 @@ export default defineComponent({
 
     const hasTopSlot = computed(() => !!slots.top)
 
+    const sortedColumn = ref<string | null>(null)
+    const sortDirection = ref<'asc' | 'desc'>('asc')
+
+    const sortedItems = computed(() => {
+      if (!sortedColumn.value) return props.items
+
+      const header = props.headers.find((h) => h.key === sortedColumn.value)
+      if (!header || !header.sortable) return props.items
+
+      return [...props.items].sort((a, b) => {
+        const valueA = header.sortFn ? header.sortFn(a) : a[sortedColumn.value!]
+        const valueB = header.sortFn ? header.sortFn(b) : b[sortedColumn.value!]
+
+        if (valueA < valueB) {
+          return sortDirection.value === 'asc' ? -1 : 1
+        }
+        if (valueA > valueB) {
+          return sortDirection.value === 'asc' ? 1 : -1
+        }
+        return 0
+      })
+    })
+
+    const sortBy = (column: string) => {
+      if (sortedColumn.value === column) {
+        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+      } else {
+        sortedColumn.value = column
+        sortDirection.value = 'asc'
+      }
+    }
+
     const handleNext = () => {
       emit('next')
     }
@@ -171,6 +213,10 @@ export default defineComponent({
 
     return {
       hasTopSlot,
+      sortedColumn,
+      sortDirection,
+      sortedItems,
+      sortBy,
       handleNext,
       handlePrev,
     }

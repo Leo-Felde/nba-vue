@@ -46,10 +46,7 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -70,8 +67,19 @@ button:focus-visible {
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+}
+
+@media(max-width: 759px) {
+  #app {
+    padding: 1rem;
+  }
+}
+
+@media(min-width: 756px) {
+  #app {
+    padding: 2rem;
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -82,4 +90,8 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
+}
+
+.confirmDialog-container {
+  z-index: 999;
 }

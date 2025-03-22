@@ -46,6 +46,7 @@ const Snackbar = {
     app.provide('snackbar', showSnackbar)
 
     const container = document.createElement('div')
+    container.className = 'snackbar-container fixed top-5 right-5 space-y-2'
     document.body.appendChild(container)
 
     const SnackbarContainer = defineComponent({
@@ -53,7 +54,7 @@ const Snackbar = {
         return () =>
           h(
             'div',
-            { class: 'snackbar-container fixed top-5 right-5 space-y-2' },
+            {},
             snackbarQueue.map((snackbar, index) =>
               createVNode(SnackbarComponent, {
                 key: index,

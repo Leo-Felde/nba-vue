@@ -33,3 +33,40 @@ export const getPlayer = async (id: number): Promise<Player> => {
     throw error
   }
 }
+
+//// ENDPOINTS MOCK
+export const createPlayer = async (
+  player: Player
+): Promise<{ status: number; data: Player }> => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 2500))
+    return { status: 201, data: player }
+  } catch (error) {
+    console.error('Erro ao criar o jogador', error)
+    throw error
+  }
+}
+
+export const updatePlayer = async (
+  player: Player
+): Promise<{ status: number; data: Player }> => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 2500))
+    return { status: 200, data: player }
+  } catch (error) {
+    console.error(`Erro ao editar o jogador de id ${player.id}:`, error)
+    throw error
+  }
+}
+
+export const deletePlayer = async (
+  id: number
+): Promise<{ status: number; message: string }> => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 2500))
+    return { status: 204, message: 'Jogador excluído com sucesso' }
+  } catch (error) {
+    console.error(`Erro ao excluir o jogador de id ${id}:`, error)
+    throw error
+  }
+}
